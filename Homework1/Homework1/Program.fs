@@ -1,4 +1,6 @@
-﻿let factorial n =
+﻿module Homework1
+
+let factorial n =
     if n < 0 then
         None
     else
