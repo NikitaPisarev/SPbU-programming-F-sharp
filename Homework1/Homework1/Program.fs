@@ -31,13 +31,14 @@ let reverse list =
     recReverse list []
 
 let powerSeries n m =
-    let rec generateSeries curr i acc =
-        if i > m then
-            acc
+    if n < 0 || m < 0 then None else
+    let rec generateSeries i acc =
+        if i = 0 then
+            Some(acc)
         else
-            generateSeries (curr * 2) (i + 1) (acc @ [ curr ])
+            generateSeries (i - 1) (List.head acc / 2 :: acc)
 
-    generateSeries (pown 2 n) 0 []
+    generateSeries m [pown 2 (n+m)]
 
 let findFirst list x =
     let rec recFindFirst list pos =
