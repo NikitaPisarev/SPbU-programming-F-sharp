@@ -42,7 +42,7 @@ let powerSeries n m =
 let findFirst list x =
     let rec recFindFirst list pos =
         match list with
-        | [] -> -1
-        | h :: t -> if h = x then pos else recFindFirst t (pos + 1)
+        | [] -> None
+        | h :: t -> if h = x then Some(pos) else recFindFirst t (pos + 1)
 
     recFindFirst list 0
