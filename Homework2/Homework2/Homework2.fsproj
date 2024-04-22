@@ -9,6 +9,7 @@
     <Compile Include="EvenNumbers.fs" />
     <Compile Include="MapForTrees.fs" />
     <Compile Include="ParseTree.fs" />
+    <Compile Include="PrimeNumbers.fs" />
   </ItemGroup>
 
 </Project>
