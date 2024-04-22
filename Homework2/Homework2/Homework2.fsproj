@@ -8,6 +8,7 @@
   <ItemGroup>
     <Compile Include="EvenNumbers.fs" />
     <Compile Include="MapForTrees.fs" />
+    <Compile Include="ParseTree.fs" />
   </ItemGroup>
 
 </Project>
