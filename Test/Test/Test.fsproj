@@ -8,6 +8,7 @@
   <ItemGroup>
     <Compile Include="Square.fs" />
     <Compile Include="Fibonacci.fs" />
+    <Compile Include="PriorityQueue.fs" />
   </ItemGroup>
 
 </Project>
