@@ -43,3 +43,25 @@ let rec eval term =
     let reduced = betaReduce term
     if reduced = term then term else eval reduced
 
+let printTerm term =
+    let rec print t =
+        match t with
+        | Var x -> x
+        | Lam(x, e) -> sprintf "λ%s.%s" x (print e)
+        | App(e1, e2) ->
+            let s1 = match e1 with
+                        | Lam _ -> sprintf "(%s)" (print e1)
+                        | _ -> print e1
+            let s2 = match e2 with
+                        | App _ | Lam _ -> sprintf "(%s)" (print e2)
+                        | _ -> print e2
+            sprintf "%s %s" s1 s2
+    print term
+
+let K = Lam ("x", Lam ("y", Var "x"))
+let S = Lam ("x", Lam ("y", Lam ("z", App (App (Var "x", Var "z"), App (Var "y", Var "z")))))
+let example = App (App (S, K), K)
+
+printfn "Original: %s" (printTerm example)
+let reducedExample = eval example
+printfn "Reduced: %s" (printTerm reducedExample)
