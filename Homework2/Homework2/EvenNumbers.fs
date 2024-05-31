@@ -1,7 +1,7 @@
 ﻿module Homework2.EvenNumbers
 
 let countEvenNumbersMap list =
-    list |> List.map (fun number -> if abs number % 2 = 0 then 1 else 0) |> List.sum
+    list |> List.map (fun number -> if number % 2 = 0 then 1 else 0) |> List.sum
 
 let countEvenNumbersFilter list =
     list |> List.filter (fun number -> abs number % 2 = 0) |> List.length
