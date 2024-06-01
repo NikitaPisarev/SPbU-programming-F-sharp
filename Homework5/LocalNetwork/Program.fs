@@ -3,15 +3,13 @@
 open System
 
 type OperatingSystem(name: string, infectionProbability: float) =
-    member this.Name = name
-    member this.InfectionProbability = infectionProbability
+    member val Name = name with get
+    member val InfectionProbability = infectionProbability with get
 
-type Computer(id: int, os: OperatingSystem, initiallyInfected: bool) =
-    let mutable isInfected = initiallyInfected
-    member this.ID = id
-    member this.OS = os
-    member this.IsInfected = isInfected
-    member this.Infect() = isInfected <- true
+type Computer(id: int, os: OperatingSystem, isInfected: bool) =
+    member val ID = id
+    member val OS = os
+    member val IsInfected = isInfected with get, set
 
 type Network(computers: list<Computer>, adjacencyList: Map<int, list<int>>) =
     member val Computers = computers with get
@@ -32,7 +30,7 @@ type Network(computers: list<Computer>, adjacencyList: Map<int, list<int>>) =
                             toBeInfected <- target :: toBeInfected)
             | _ -> ()
 
-        toBeInfected |> List.iter (fun computer -> computer.Infect())
+        toBeInfected |> List.iter (fun computer -> computer.IsInfected <- true)
 
     member this.Run() =
         let mutable stillChanging = true
