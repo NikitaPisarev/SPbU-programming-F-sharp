@@ -11,10 +11,9 @@ let extractLinks (html: string) =
             yield mtch.Groups.[2].Value
     }
 
-let fetchHtml (url: string) =
+let fetchHtml (client: HttpClient) (url: string) =
     async {
         try
-            use client = new HttpClient()
             let! html = client.GetStringAsync(url) |> Async.AwaitTask
             return html
         with ex ->
@@ -22,31 +21,40 @@ let fetchHtml (url: string) =
             return ""
     }
 
-
-let fetchAndPrintSizes (url: string) =
+let fetchSizes (client: HttpClient) (url: string) =
     async {
-        let! mainHtml = fetchHtml url
+        let! mainHtml = fetchHtml client url
         let links = extractLinks mainHtml
 
         let fetchTasks =
             links
             |> Seq.map (fun link ->
                 async {
-                    let! html = fetchHtml link
+                    let! html = fetchHtml client link
                     return (link, html.Length)
                 })
 
         let! results = fetchTasks |> Async.Parallel
 
-        results
-        |> Array.iter (fun (link, size) -> printfn "%s — %d characters." link size)
+        return results
+    }
+
+let printSizes (sizes: (string * int)[]) =
+    sizes
+    |> Array.iter (fun (link, size) -> printfn "%s — %d characters." link size)
+
+let fetchAndPrintSizes (client: HttpClient) (url: string) =
+    async {
+        let! sizes = fetchSizes client url
+        printSizes sizes
     }
 
 [<EntryPoint>]
 let main argv =
     if argv.Length > 0 then
-        Async.RunSynchronously(fetchAndPrintSizes argv.[0])
+        let client = new HttpClient()
+        Async.RunSynchronously(fetchAndPrintSizes client argv.[0])
+        0
     else
         printfn "Missing URL."
-
-    0
+        1
