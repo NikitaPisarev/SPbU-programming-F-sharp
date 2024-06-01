@@ -11,26 +11,29 @@ type Computer(id: int, os: OperatingSystem, isInfected: bool) =
     member val OS = os
     member val IsInfected = isInfected with get, set
 
+    member this.AttemptInfection(random: Random) =
+        if not this.IsInfected && random.NextDouble() < this.OS.InfectionProbability then
+            this.IsInfected <- true
+
 type Network(computers: list<Computer>, adjacencyList: Map<int, list<int>>) =
+    let random = new Random()
+
     member val Computers = computers with get
     member val AdjacencyList = adjacencyList with get
 
     member this.Step() =
-        let random = new Random()
-        let mutable toBeInfected = []
+        let toBeInfected =
+            this.Computers
+            |> List.collect (fun source ->
+                match this.AdjacencyList.TryGetValue(source.ID) with
+                | (true, neighbors) when source.IsInfected ->
+                    neighbors
+                    |> List.map (fun id -> this.Computers |> List.find (fun c -> c.ID = id))
+                    |> List.filter (fun target -> not target.IsInfected)
+                | _ -> [])
+            |> List.distinct
 
-        for source in this.Computers do
-            match this.AdjacencyList.TryGetValue(source.ID) with
-            | (true, neighbors) ->
-                neighbors
-                |> List.map (fun id -> this.Computers |> List.find (fun c -> c.ID = id))
-                |> List.iter (fun target ->
-                    if source.IsInfected && not target.IsInfected then
-                        if random.NextDouble() < target.OS.InfectionProbability then
-                            toBeInfected <- target :: toBeInfected)
-            | _ -> ()
-
-        toBeInfected |> List.iter (fun computer -> computer.IsInfected <- true)
+        toBeInfected |> List.iter (fun computer -> computer.AttemptInfection(random))
 
     member this.Run() =
         let mutable stillChanging = true
