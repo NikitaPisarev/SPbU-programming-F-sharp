@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Square.fs" />
+    <Compile Include="Fibonacci.fs" />
+    <Compile Include="PriorityQueue.fs" />
+  </ItemGroup>
+
+</Project>
