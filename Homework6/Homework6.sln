@@ -7,6 +7,10 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "RoundWorkflow", "RoundWorkf
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "RoundWorkflow.Tests", "RoundWorkflow.Tests\RoundWorkflow.Tests.fsproj", "{84C54D20-51F6-4F06-BD2F-8624042491B4}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "StringCalculation", "StringCalculation\StringCalculation.fsproj", "{23F1D2D4-8FCA-41BF-8FA1-289DDAE15859}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "StringCalculation.Tests", "StringCalculation.Tests\StringCalculation.Tests.fsproj", "{3B060F4A-D13D-439A-B6D9-AF914A16A825}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +28,13 @@ Global
 		{84C54D20-51F6-4F06-BD2F-8624042491B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84C54D20-51F6-4F06-BD2F-8624042491B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84C54D20-51F6-4F06-BD2F-8624042491B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23F1D2D4-8FCA-41BF-8FA1-289DDAE15859}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23F1D2D4-8FCA-41BF-8FA1-289DDAE15859}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23F1D2D4-8FCA-41BF-8FA1-289DDAE15859}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23F1D2D4-8FCA-41BF-8FA1-289DDAE15859}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B060F4A-D13D-439A-B6D9-AF914A16A825}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B060F4A-D13D-439A-B6D9-AF914A16A825}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B060F4A-D13D-439A-B6D9-AF914A16A825}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B060F4A-D13D-439A-B6D9-AF914A16A825}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
