@@ -1,4 +1,4 @@
-﻿module NetworkSimulation
+﻿module LocalNetwork
 
 open System
 
@@ -19,21 +19,22 @@ type Network(computers: list<Computer>, adjacencyList: Map<int, list<int>>) =
 
     member this.Step() =
         let random = new Random()
-
-        let tryInfect (source: Computer) (target: Computer) =
-            if source.IsInfected && not target.IsInfected then
-                if random.NextDouble() < target.OS.InfectionProbability then
-                    target.Infect()
+        let mutable toBeInfected = []
 
         for source in this.Computers do
             match this.AdjacencyList.TryGetValue(source.ID) with
             | (true, neighbors) ->
                 neighbors
                 |> List.map (fun id -> this.Computers |> List.find (fun c -> c.ID = id))
-                |> List.iter (fun target -> tryInfect source target)
+                |> List.iter (fun target ->
+                    if source.IsInfected && not target.IsInfected then
+                        if random.NextDouble() < target.OS.InfectionProbability then
+                            toBeInfected <- target :: toBeInfected)
             | _ -> ()
 
-    member this.RunSimulation() =
+        toBeInfected |> List.iter (fun computer -> computer.Infect())
+
+    member this.Run() =
         let mutable stillChanging = true
 
         while stillChanging do
@@ -66,22 +67,3 @@ type Network(computers: list<Computer>, adjacencyList: Map<int, list<int>>) =
     member this.PrintStatus() =
         for computer in this.Computers do
             printfn "Computer %d: OS = %s, Infected = %b" computer.ID computer.OS.Name computer.IsInfected
-
-let setupAndRunSimulation () =
-    let osWindows = OperatingSystem("Windows", 0.4)
-    let osLinux = OperatingSystem("Linux", 0.2)
-    let osMacOS = OperatingSystem("MacOS", 0.0)
-
-    let computers =
-        [ Computer(0, osWindows, false)
-          Computer(1, osLinux, true)
-          Computer(2, osMacOS, false)
-          Computer(3, osWindows, false) ]
-
-    let adjacencyList =
-        Map.ofList [ (0, [ 1 ]); (1, [ 0; 2 ]); (2, [ 1; 3 ]); (3, [ 2 ]) ]
-
-    let network = Network(computers, adjacencyList)
-    network.RunSimulation()
-
-setupAndRunSimulation ()
