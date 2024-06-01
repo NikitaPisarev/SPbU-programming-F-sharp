@@ -14,8 +14,14 @@ let extractLinks (html: string) =
 let fetchHtml (client: HttpClient) (url: string) =
     async {
         try
-            let! html = client.GetStringAsync(url) |> Async.AwaitTask
-            return html
+            let httpRequest = new HttpRequestMessage(HttpMethod.Get, url)
+
+            let! response =
+                client.SendAsync(httpRequest, System.Threading.CancellationToken.None)
+                |> Async.AwaitTask
+
+            let! content = response.Content.ReadAsStringAsync() |> Async.AwaitTask
+            return content
         with ex ->
             printfn "Failed to download %s. Exception: %s" url ex.Message
             return ""

@@ -9,9 +9,10 @@ open FsUnit
 open MiniCrawler
 
 [<Test>]
-let MockLinkWithOneLinkShouldWorkCorrect () : unit =
+let ``fetchSizes test`` () : unit =
     let client = Mock<HttpClient>()
     let url = "https://test.com/"
+    let mainUrl = "https://fake.com/"
 
     let response = new HttpResponseMessage(HttpStatusCode.OK)
 
@@ -27,6 +28,6 @@ let MockLinkWithOneLinkShouldWorkCorrect () : unit =
 
     let expected = [| (url, 4) |]
 
-    let actual = Async.RunSynchronously(fetchSizes client.Object "https://fake.com")
+    let actual = Async.RunSynchronously(fetchSizes client.Object mainUrl)
 
     Assert.AreEqual(expected, actual)
