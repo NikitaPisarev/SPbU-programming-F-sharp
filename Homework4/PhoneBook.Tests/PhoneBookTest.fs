@@ -15,13 +15,19 @@ let ``Add entry to PhoneBook should work`` () =
 let ``Find phone by name should return correct phone number`` () =
     let phoneBook = Map.empty |> addEntry "Bob" "424214"
     let result = findPhoneByName "Bob" phoneBook
-    result |> should equal "424214"
+
+    match result with
+    | Found phone -> phone |> should equal "424214"
+    | NotFound _ -> Assert.Fail("Phone not found.")
 
 [<Test>]
 let ``Find name by phone should return correct name`` () =
     let phoneBook = Map.empty |> addEntry "Bob" "424214"
     let result = findNameByPhone "424214" phoneBook
-    result |> should equal "Bob"
+
+    match result with
+    | Found name -> name |> should equal "Bob"
+    | NotFound _ -> Assert.Fail("Name not found.")
 
 [<Test>]
 let ``List all entries correctly`` () =

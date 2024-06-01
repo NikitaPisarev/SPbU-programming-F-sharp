@@ -3,21 +3,25 @@ module PhoneBook
 type PhoneBookEntry = { Name: string; Phone: string }
 type PhoneBook = Map<string, PhoneBookEntry>
 
+type Result<'T> =
+    | Found of 'T
+    | NotFound of string
+
 let addEntry name phone (phoneBook: PhoneBook) =
     Map.add name { Name = name; Phone = phone } phoneBook
 
 let findPhoneByName name (phoneBook: PhoneBook) =
     match Map.tryFind name phoneBook with
-    | Some(entry) -> entry.Phone
-    | None -> "Entry not found."
+    | Some(entry) -> Found entry.Phone
+    | None -> NotFound "Entry not found."
 
 let findNameByPhone phone (phoneBook: PhoneBook) =
     phoneBook
     |> Map.toList
     |> List.tryFind (fun (_, entry) -> entry.Phone = phone)
     |> function
-        | Some(name, _) -> name
-        | None -> "Entry not found."
+        | Some(name, _) -> Found name
+        | None -> NotFound "Entry not found."
 
 let listAllEntries (phoneBook: PhoneBook) =
     phoneBook |> Map.toList |> List.map (fun (name, entry) -> (name, entry.Phone))
@@ -30,7 +34,6 @@ let saveToFile filename (phoneBook: PhoneBook) =
 
     System.IO.File.WriteAllLines(filename, lines)
     printfn "Data saved to %s." filename
-
 
 let loadFromFile filename =
     let lines = System.IO.File.ReadAllLines(filename)

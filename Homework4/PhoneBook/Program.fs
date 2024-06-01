@@ -25,13 +25,17 @@ let rec mainLoop book =
     | "a" when input.Length > 2 -> mainLoop (addEntry input.[1] input.[2] book)
     | "findbyname"
     | "fbn" when input.Length > 1 ->
-        let result = findPhoneByName input.[1] book
-        printfn "%s" result
+        match findPhoneByName input.[1] book with
+        | Found phone -> printfn "Phone number: %s" phone
+        | NotFound msg -> printfn "%s" msg
+
         mainLoop book
     | "findbyphone"
     | "fbp" when input.Length > 1 ->
-        let result = findNameByPhone input.[1] book
-        printfn "%s" result
+        match findNameByPhone input.[1] book with
+        | Found name -> printfn "Name: %s" name
+        | NotFound msg -> printfn "%s" msg
+
         mainLoop book
     | "listall"
     | "la" ->
